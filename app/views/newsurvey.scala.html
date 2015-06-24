@@ -1,0 +1,13 @@
+
+<body>
+    @helper.form(action = routes.Survey.add){
+                <form class="form-signin" id="login" role="form">
+                    <h2 align="center">New Survey</h2>
+                    <input type="title" class="form-control" name="title" id="title" placeholder="Title" autofocus>
+                    <textarea type="text" class="form-control" name="questions" id="questions"  placeholders="Question"></textarea>
+                    <textarea type="text" class="form-control" name="emails" id="emails"  placeholders="Email"></textarea>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Done</button>
+                </form>
+    }
+</body>
+</html>

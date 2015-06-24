@@ -1,5 +1,6 @@
 package controllers
 
+import models._
 import play.api.data.Form
 import play.api.mvc._
 import play.modules.reactivemongo._
@@ -75,10 +76,9 @@ object Application extends Controller with MongoController{
   }
 
   def getLoginHtmlFuture = { request:Request[AnyContent] =>
-    getLoggedInUser(request).map{
+    getLoggedInUser(request).map {
       user =>
-        user match
-        {
+        user match {
           case InvalidUser() => views.html.badlogin("Invalid Credentials")
           case NoLoggedInUser() => views.html.loginform()
           case LoggedInUser(userid, username) => views.html.authenticated(username)
@@ -102,7 +102,8 @@ object Application extends Controller with MongoController{
 
   def add = Action.async { implicit request =>
     Redirect(routes.Login.logout())
-    models.User.form.bindFromRequest.fold(
+    println("user created")
+    User.form.bindFromRequest.fold(
       errors => Future.successful(Redirect(routes.Application.index)),
       user =>
         LoginCollection.insert(user).zip(partialIndex(models.User.form.fill(user))).map(_._2)

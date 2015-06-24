@@ -1,3 +1,67 @@
 @(user: String)
-<div class="w1" align="right">Welcome! @user</div>
-<div class="wl" align="right"><a href="@routes.Login.logout">Logout</a></div>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <div class="w1" align="right">Welcome! @user</div>
+    <div class="wl" align="right"><a href="@routes.Login.logout">Logout</a></div>
+</head>
+
+<button class="btn-primary" type="submit"><a href="@routes.Survey.newSurvey">Create New</a></button>
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+        <a class="panel-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <h4 class="panel-title">
+                Surveys
+            </h4>
+        </a>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="panel-body">
+            <h3>Surveys</h3>
+            <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwoNoCategory">
+                        <a class="panel-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwoNoCategory" aria-expanded="false" aria-controls="collapseTwoNoCategory">
+                            First Survey
+                        </a>
+                    </div>
+                    <div id="collapseTwoNoCategory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoNoCategory">
+                        <div class="panel-body">
+                            <table id="projects-for-nil" class="table table-striped">
+                                <tr class="header-row">
+                                    <th>Title</th>
+                                    <th>Create Date</th>
+                                    <th>Sent Date</th>
+                                    <th>Responses</th>
+                                </tr>
+                                <tbody class="data-rows">
+                                <tr>
+                                    <td>
+                                        First Survey
+                                    </td>
+                                    <td>
+                                        May 17, 2015
+                                    </td>
+                                    <td>
+                                        50
+                                    </td>
+                                    <td>
+                                        30
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</html>
