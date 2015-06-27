@@ -10,6 +10,7 @@ import reactivemongo.bson._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+
 object Application extends Controller with MongoController{
 
   lazy val LoginCollection = db("users")
@@ -108,4 +109,5 @@ object Application extends Controller with MongoController{
       user =>
         LoginCollection.insert(user).zip(partialIndex(models.User.form.fill(user))).map(_._2)
     )}
+
 }

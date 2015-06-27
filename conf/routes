@@ -7,6 +7,7 @@ GET     /                           controllers.Application.index
 POST	/   						controllers.Application.add
 POST    /login                      controllers.Login.authenticate
 GET     /newsurvey                  controllers.Survey.newSurvey
+GET     /viewtitle                  controllers.Survey.index
 POST    /newsurvey                  controllers.Survey.add
 GET     /logout                     controllers.Login.logout
 GET     /signup                     controllers.Login.signup

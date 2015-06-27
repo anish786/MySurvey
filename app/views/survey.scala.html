@@ -1,0 +1,13 @@
+@(lstSurveys: List[Survey])
+You have @lstSurveys.size surveys
+
+<div>
+    @for(survey <- lstSurveys){
+
+
+    <!--<div>Name: @survey.createDate</div>-->
+    <div>Title: @survey.title</div>
+    <div>Questions: @survey.questions</div>
+    <br/>
+    }
+</div>

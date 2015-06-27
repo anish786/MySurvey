@@ -1,5 +1,5 @@
 import org.specs2.mutable._
-gldjg
+
 import org.specs2.runner._
 import org.junit.runner._
 

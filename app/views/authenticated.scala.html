@@ -1,4 +1,32 @@
 @(user: String)
+@*(authors: List[Author])(author:Form[Author])*@
+<!DOCTYPE html>
+<html>
+<br>
 <div class="w1" align="right">Welcome! @user</div>
 <div class="wl" align="right"><a href="@routes.Login.logout">Logout</a></div>
 <button class="btn-primary" type="submit"><a href="@routes.Survey.newSurvey">Create New</a></button>
+<button class="btn-primary" type="submit"><a href="@routes.Survey.index">Show</a></button></br>
+@*{
+Got @surveys.size surveys
+
+<div>
+    @for(survey <- surveys){
+    title: @survey.title</br>
+    questions: @author.questions<br/>
+    }
+</div>
+
+<!--Add new:<br/>-->
+<!--@helper.form(action = routes.Application.add){-->
+<!--@helper.inputText(author("name"))-->
+<!--@helper.inputText(author("email"))-->
+<!--@helper.textarea(author("bio"))-->
+<!--<input type="submit" value="submit"/>-->
+<!--}-->
+}*@
+
+</body>
+</html>
+
+
