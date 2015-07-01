@@ -1,0 +1,12 @@
+@(lstSurveys: List[Survey])
+<div>
+        @for(survey <- lstSurveys){
+            <div align="center">@survey.title</div>
+            @if(survey.questions != ""){
+                <div>@survey.questions</div><br>
+                <div><input type="text" required></div>
+            }
+        <br/>
+        <div><button type="submit">Done</button></div>
+        }
+</div>

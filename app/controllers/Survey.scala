@@ -4,8 +4,9 @@ package controllers
  * Created by Anish on 4/28/2015.
  */
 
-
+import controllers.Application.LoginCollection
 import controllers.Application._
+import controllers.Login._
 import play.api.data.Form
 import play.modules.reactivemongo._
 import play.api.mvc._
@@ -21,7 +22,7 @@ object Survey extends Controller with MongoController{
   trait Survey
 
   def partialIndex(form:Form[models.Survey]) = {
-    val found = LoginCollection.find(BSONDocument(
+    val found = SurveyCollection.find(BSONDocument(
       "$query" -> BSONDocument()
     )).cursor[models.Survey]
     found.collect[List]().map{
@@ -34,13 +35,11 @@ object Survey extends Controller with MongoController{
   }
 
   def add = Action.async { implicit request =>
-    println("I am in")
     models.Survey.form.bindFromRequest.fold(
       errors => {
-        println("errors")
         Future.successful(Redirect(routes.Application.index))},
       survey => {
-        println("storing into database")
+        Application.generatePage(request,views.html.loginform())
         SurveyCollection.insert(survey).zip(partialIndex(models.Survey.form.fill(survey))).map(_._2)
       }
     )
@@ -54,7 +53,7 @@ object Survey extends Controller with MongoController{
 
     val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
       list =>
-        views.html.survey(list)
+        views.html.usersurvey(list)
     }
 
     val futauthpage = for{

@@ -11,7 +11,6 @@ import play.api.data.validation.Constraints._
 import reactivemongo.bson.{BSONDateTime, BSONObjectID, BSONDocumentWriter, BSONDocumentReader, BSONDocument}
 import models.BSONProducers._
 
-
 case class Survey (id:Option[BSONObjectID],
                     createDate:Option[java.util.Date],
                     //sentDate:Option[java.util.Date],

@@ -1,13 +1,24 @@
 @(lstSurveys: List[Survey])
-You have @lstSurveys.size surveys
-
-<div>
-    @for(survey <- lstSurveys){
-
-
-    <!--<div>Name: @survey.createDate</div>-->
-    <div>Title: @survey.title</div>
-    <div>Questions: @survey.questions</div>
-    <br/>
-    }
+<body>
+<div data-role="page" id="pageone">
+    <div data-role="main" class="ui-content">
+        <form><input type="button" value="back" onClick="history.go(-1);return true;"></form>
+        <div data-role="collapsibleset">
+            @for(survey <- lstSurveys){
+            <div data-role="collapsible">
+                <h3>@survey.title</h3>
+                <p>Sent Date: @survey.createDate</p>
+                <p>@if(survey.emails != ""){
+                    Sent: @survey.emails.length
+                }</p>
+                <p>Received: 0</p>
+                <div data-role="collapsible">
+                    <h3>Responses</h3>
+                    <p>First response</p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
 </div>
+</body>

@@ -1,11 +1,31 @@
-
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </head>
 <body>
-    @helper.form(action = routes.Survey.add){
-                    <h2 align="center">New Survey</h2>
-                    <input type="title" name="title" id="title" placeholder="Title" autofocus>
-                    <div><textarea type="text" name="questions" id="questions"  placeholders="Question"></textarea></div>
-                    <textarea type="text" name="emails" id="emails"  placeholders="Email"></textarea>
-                    <div><button type="submit">Done</button></div>
-    }
+<script>
+window.onload = function(){
+    var btn = document.getElementById('btnId');
+    btn.onclick = function(){
+        var txt = document.createElement("textarea");
+        btn.parentNode.insertBefore(txt, btn);
+    };
+};
+</script>
+<div data-role="page" id="pageone">
+    <div data-role="main" class="ui-content">
+        @helper.form(action = routes.Survey.add){
+            <h2 align="center">New Survey</h2>
+            <div><label>Title: </label><input type="title" name="title" id="title" placeholder="Title" autofocus required><br></div>
+            <div><label>Questions: </label><input type="text" name="questions" id="questions"  placeholders="Question" required></div>
+            <!--<div><input type="button" id="btnId" value="add"><br></div>!-->
+            <div><label>Emails: </label><input type="text" name="emails" id="emails"  placeholders="Email"><br></div>
+            <div><button type="submit">Done</button></div>
+        }
+    </div>
+</div>
 </body>
 </html>
