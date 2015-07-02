@@ -9,6 +9,9 @@ import reactivemongo.api.collections.default._
 import reactivemongo.bson._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import play.api.libs.mailer._
+import play.api.libs.mailer.MailerPlugin
+import play.api.Play.current
 
 
 object Application extends Controller with MongoController{
@@ -109,5 +112,22 @@ object Application extends Controller with MongoController{
       user =>
         LoginCollection.insert(user).zip(partialIndex(models.User.form.fill(user))).map(_._2)
     )}
+
+  def send = Action {
+        val email = Email(
+            "Simple email",
+            "Mister FROM <mysurveydev@gmail.com>",
+            Seq("Miss TO <nabirdinani@gmail.com>"),
+            //      attachments = Seq(
+              //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
+              //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
+              //      ),
+                bodyText = Some("A text message"),
+            bodyHtml = Some("<html><body><p>An <b>html</b> message</p></body></html>")
+            )
+        val id = MailerPlugin.send(email)
+
+          Ok(s"Email $id sent!")
+      }
 
 }

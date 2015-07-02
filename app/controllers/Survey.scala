@@ -4,18 +4,14 @@ package controllers
  * Created by Anish on 4/28/2015.
  */
 
-import controllers.Application.LoginCollection
-import controllers.Application._
-import controllers.Login._
 import play.api.data.Form
-import play.modules.reactivemongo._
 import play.api.mvc._
-import play.twirl.api.Html
+import play.modules.reactivemongo._
 import reactivemongo.api.collections.default._
 import reactivemongo.bson._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import models._
 
 object Survey extends Controller with MongoController{
   lazy val SurveyCollection = db("surveys")
