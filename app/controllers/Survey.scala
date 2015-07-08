@@ -78,7 +78,7 @@ object Survey extends Controller with MongoController{
   def get(authorid: String) = Action.async { implicit request =>
     val authorhtmlfut = SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(authorid))).cursor[models.Survey].collect[List]().map{
       list =>
-        views.html.survey(list)
+        views.html.usersurvey(list)
     }
 
     for{
