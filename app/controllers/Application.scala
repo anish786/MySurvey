@@ -114,20 +114,21 @@ object Application extends Controller with MongoController{
     )}
 
   def send = Action {
-        val email = Email(
-            "Simple email",
-            "Mister FROM <mysurveydev@gmail.com>",
-            Seq("Miss TO <nabirdinani@gmail.com>"),
-            //      attachments = Seq(
-              //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
-              //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
-              //      ),
-                bodyText = Some("A text message"),
-            bodyHtml = Some("<html><body><p>An <b>html</b> message</p></body></html>")
-            )
-        val id = MailerPlugin.send(email)
-
-          Ok(s"Email $id sent!")
-      }
+    for (x <- 1 to models.Survey.fldEmails.length()) {
+      val email = Email(
+        "Simple email",
+        "Mister FROM <mysurveydev@gmail.com>",
+        Seq("Miss TO <ali.anish91@gmail.com>"),
+        //      attachments = Seq(
+        //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
+        //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
+        //      ),
+        bodyText = Some("A text message"),
+        bodyHtml = Some("<html><body><p>localhost:9000/ <b>html</b>"+models.Links.fldLinks(x)+x+"</p></body></html>")
+      )
+      val id = MailerPlugin.send(email)
+    }
+    Ok("Email sent!")
+  }
 
 }

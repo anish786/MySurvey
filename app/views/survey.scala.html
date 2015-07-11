@@ -11,11 +11,17 @@
                 <p>@if(survey.emails != ""){
                     Sent: @survey.emails.length
                 }</p>
-                <p>Received: 0</p>
-                <div data-role="collapsible">
-                    <h3>Responses</h3>
-                    <p>First response</p>
-                </div>
+                @helper.form(action = routes.Links.add){
+                    @for(x <- 1 to survey.emails.length){
+                <div><input type="text" name="links" id="links" value="@survey.id.get.stringify" readonly></div>
+                        }
+                <div><button type="submit">Done</button></div>
+                }
+                <!--<p>Received: 0</p>-->
+                <!--<div data-role="collapsible">-->
+                    <!--<h3>Responses</h3>-->
+                    <!--<p>First response</p>-->
+                <!--</div>-->
             </div>
             }
         </div>

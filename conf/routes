@@ -9,10 +9,12 @@ POST    /login                      controllers.Login.authenticate
 GET     /newsurvey                  controllers.Survey.newSurvey
 GET     /surveys                    controllers.Survey.index
 POST    /survey                     controllers.Survey.add
-GET     /logout                     controllers.Login.logout
+GET     /logout/login                     controllers.Login.logout
 GET     /signup                     controllers.Login.signup
 GET     /send                       controllers.Application.send
-GET     /:surveyid                  controllers.Survey.get(surveyid: String)
+POST    /link                       controllers.Links.add
+POST    /test                       controllers.Links.submit
+# GET     /:surveyid                  controllers.Survey.get(surveyid: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

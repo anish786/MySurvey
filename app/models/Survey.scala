@@ -4,12 +4,12 @@ package models
  * Created by Anish on 4/28/2015.
  */
 
-import play.api.data._
+import models.BSONProducers._
 import play.api.data.Forms._
+import play.api.data._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
-import reactivemongo.bson.{BSONDateTime, BSONObjectID, BSONDocumentWriter, BSONDocumentReader, BSONDocument}
-import models.BSONProducers._
+import reactivemongo.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, BSONObjectID}
 
 case class Survey (id:Option[BSONObjectID],
                     createDate:Option[java.util.Date],
@@ -17,6 +17,7 @@ case class Survey (id:Option[BSONObjectID],
                     title:String,
                     questions:List[String],
                     emails:List[String])
+                    //links:List[String])
 
 object Survey {
   val fldId = "_id"
@@ -25,6 +26,7 @@ object Survey {
   val fldTitle = "title"
   val fldQuestions = "questions"
   val fldEmails = "emails"
+  //val fldLinks = "links"
 
   implicit object SurveyWriter extends BSONDocumentWriter[Survey]{
     def write(survey:Survey):BSONDocument = BSONDocument(
@@ -34,6 +36,7 @@ object Survey {
       fldTitle -> survey.title,
       fldQuestions -> survey.questions,
       fldEmails -> survey.emails
+//      fldLinks -> survey.links
     )
   }
 
@@ -45,6 +48,7 @@ object Survey {
       doc.getAs[String](fldTitle).get,
       doc.getAs[List[String]](fldQuestions).getOrElse(List()),
       doc.getAs[List[String]](fldEmails).getOrElse(List())
+//      doc.getAs[List[String]](fldLinks).getOrElse(List())
     )
   }
 
@@ -68,12 +72,12 @@ object Survey {
         //sentDate,
         title,
         questions.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c},
-        emails.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c}
+        emails.split(" ").foldLeft(List[String]()){(c,e) => e.trim :: c}
       )
     }
     {
       survey => Some(
-        (survey.id.map(_.stringify),survey.createDate,survey.title,survey.questions.mkString(","),survey.emails.mkString(","))
+        (survey.id.map(_.stringify),survey.createDate,survey.title,survey.questions.mkString(","),survey.emails.mkString(" "))
       )
     }
   )

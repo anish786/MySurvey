@@ -1,11 +1,19 @@
 @(lstSurveys: List[Survey])
 <div>
     @for(survey <- lstSurveys) {
+
+    @for(x <- 1 to survey.emails.length){
+        @if(survey.emails.length > 1){
+             <div>@survey.id.get.stringify</div>
+        }
+    }
             <div>@survey.title</div>
+    @for(x <- 1 to survey.questions.length){
             @if(survey.questions != ""){
-                <div>@survey.questions</div><br>
+                <div>@survey.questions(x-1)</div><br>
                 <div><input type="text" required></div>
             }
+    }
         <br/>
         <div><button type="submit">Done</button></div>
     }

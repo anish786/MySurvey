@@ -42,6 +42,7 @@ object Survey extends Controller with MongoController{
   }
 
   def newSurvey = Action.async { implicit request =>
+
     Application.generatePage(request, views.html.newsurvey())
   }
 
@@ -49,7 +50,7 @@ object Survey extends Controller with MongoController{
 
     val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
       list =>
-        views.html.usersurvey(list)
+        views.html.survey(list)
     }
 
     val futauthpage = for{
@@ -58,7 +59,7 @@ object Survey extends Controller with MongoController{
     //page <- Application.generatePage(request,authorpage,false)
     } yield {
         user match {
-          case Application.LoggedInUser(userid,username) => views.html.aggregator(authorpage)(views.html.newsurvey())
+          case Application.LoggedInUser(userid,username) => views.html.aggregator(authorpage)(views.html.confirmation())
           case _ => authorpage
         }
       }
