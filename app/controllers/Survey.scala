@@ -35,8 +35,12 @@ object Survey extends Controller with MongoController{
       errors => {
         Future.successful(Redirect(routes.Application.index))},
       survey => {
+        //generate a new bson object id
+        val q = BSONObjectID("_id" -> models.Survey.fldId)
+        //create a new survey object from the contents of the old one but with new survey id
         Application.generatePage(request,views.html.loginform())
         SurveyCollection.insert(survey).zip(partialIndex(models.Survey.form.fill(survey))).map(_._2)
+        //do links.insert with the new survey object id
       }
     )
   }

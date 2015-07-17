@@ -40,6 +40,7 @@ object Links extends Controller with MongoController{
       }
     )
   }
+
   def submit = Action.async { implicit request =>
 
     Application.getLoggedInUser(request).map{
