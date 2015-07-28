@@ -12,8 +12,7 @@ POST    /survey                     controllers.Survey.add
 GET     /logout/login                     controllers.Login.logout
 GET     /signup                     controllers.Login.signup
 GET     /send                       controllers.Application.send
-POST    /link                       controllers.Links.add
-POST    /test                       controllers.Links.submit
+GET     /survey/:surveyid/send/:emails  controllers.Survey.sendSurvey(surveyid: String, emails: String)
 # GET     /:surveyid                  controllers.Survey.get(surveyid: String)
 
 # Map static resources from the /public folder to the /assets URL path

@@ -124,7 +124,7 @@ object Application extends Controller with MongoController{
         //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
         //      ),
         bodyText = Some("A text message"),
-        bodyHtml = Some("<html><body><p>localhost:9000/ <b>html</b>"+models.Links.fldLinks(x)+x+"</p></body></html>")
+        bodyHtml = Some("<html><body><p>localhost:9000/ <b>html</b></p></body></html>")
       )
       val id = MailerPlugin.send(email)
     }

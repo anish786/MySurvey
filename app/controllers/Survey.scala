@@ -7,6 +7,7 @@ package controllers
 import play.api.data.Form
 import play.api.mvc._
 import play.modules.reactivemongo._
+import play.twirl.api.Html
 import reactivemongo.api.collections.default._
 import reactivemongo.bson._
 
@@ -15,6 +16,7 @@ import scala.concurrent.Future
 
 object Survey extends Controller with MongoController{
   lazy val SurveyCollection = db("surveys")
+  lazy val ResponseCollection = db("responses")
   trait Survey
 
   def partialIndex(form:Form[models.Survey]) = {
@@ -36,13 +38,37 @@ object Survey extends Controller with MongoController{
         Future.successful(Redirect(routes.Application.index))},
       survey => {
         //generate a new bson object id
-        val q = BSONObjectID("_id" -> models.Survey.fldId)
+        //val q = BSONObjectID("_id" -> models.Survey.fldId)
         //create a new survey object from the contents of the old one but with new survey id
         Application.generatePage(request,views.html.loginform())
         SurveyCollection.insert(survey).zip(partialIndex(models.Survey.form.fill(survey))).map(_._2)
         //do links.insert with the new survey object id
       }
     )
+  }
+
+  def sendSurvey(surveyid:String,emails:String) = Action.async{ implicit request =>
+    val lstEmails = emails.split(",")
+    SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(surveyid))).one[models.Survey].map{
+      optSurvey => {
+        optSurvey match {
+          case Some(survey) =>
+            val answer = lstEmails.foldLeft(""){
+              (result,email) =>
+                val responseId = BSONObjectID.generate
+                val response = survey.createResponse(responseId)
+                //ResponseCollection.insert(response)
+                result.concat(email).concat(responseId.stringify)
+
+            }
+            play.api.Logger.debug(answer)
+            Ok(Html(answer))
+          case None => BadRequest
+        }
+      }
+    }
+
+    Future.successful(Ok)
   }
 
   def newSurvey = Action.async { implicit request =>

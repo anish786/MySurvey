@@ -1,6 +1,6 @@
 import play.PlayScala
 
-name := """SurveyProject"""
+name := """MySurvey"""
 
 version := "1.0-SNAPSHOT"
 

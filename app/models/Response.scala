@@ -11,7 +11,8 @@ import play.api.data.validation.Constraints._
 import reactivemongo.bson.{BSONDateTime, BSONObjectID, BSONDocumentWriter, BSONDocumentReader, BSONDocument}
 import models.BSONProducers._
 
-case class Response (id:Option[BSONObjectID],
+case class Response (id:BSONObjectID,
+                     surveyid:BSONObjectID,
                      finishDate:Option[java.util.Date],
                      title:String,
                      questions:List[String],
@@ -19,6 +20,7 @@ case class Response (id:Option[BSONObjectID],
                      sent:Boolean)
 object Response{
   val fldId = "_id"
+  val fldSurveyId = "surveyid"
   val fldFinishDate = "finishdate"
   val fldTitle = "title"
   val fldQuestions = "questions"
@@ -27,7 +29,8 @@ object Response{
 
   implicit object ResponseWriter extends BSONDocumentWriter[Response]{
     def write(response:Response):BSONDocument = BSONDocument(
-      fldId -> response.id.getOrElse(BSONObjectID.generate),
+      fldId -> response.id,
+      fldSurveyId -> response.surveyid,
       fldFinishDate -> response.finishDate.getOrElse(new java.util.Date()),
       fldTitle -> response.title,
       fldQuestions -> response.questions,
@@ -38,7 +41,8 @@ object Response{
 
   implicit object ResponseReader extends BSONDocumentReader[Response]{
     def read(doc:BSONDocument):Response = Response(
-      doc.getAs[BSONObjectID](fldId),
+      doc.getAs[BSONObjectID](fldId).get,
+      doc.getAs[BSONObjectID](fldSurveyId).get,
       doc.getAs[java.util.Date](fldFinishDate),
       //doc.getAs[java.util.Date](fldSentDate),
       doc.getAs[String](fldTitle).get,
@@ -49,31 +53,20 @@ object Response{
   }
   val form = Form(
     mapping(
-      fldId -> optional(of[String] verifying pattern (
-        Common.objectIdRegEx,
-        "constraint.objectId",
-        "error.objectId"
-      )),
-      fldFinishDate -> optional(of[java.util.Date]),
-      fldTitle -> nonEmptyText,
-      fldQuestions -> nonEmptyText,
-      fldAnswers -> nonEmptyText,
-      fldSent -> boolean
+      fldId -> nonEmptyText, //verifying pattern (
+        //Common.objectIdRegEx,
+        //"constraint.objectId",
+        //"error.objectId"
+      //)),
+      //fldTitle -> nonEmptyText,
+      //fldQuestions -> nonEmptyText,
+      fldAnswers -> list(text)
+      //fldSent -> boolean
     )
-    { (id,finishDate,title,questions,answers,sent) =>
-      Response(
-        id.map(BSONObjectID(_)),
-        finishDate,
-        title,
-        questions.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c},
-        answers.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c},
-        sent
-      )
+    { (id,answers) => id->answers
     }
     {
-      response => Some(
-        (response.id.map(_.stringify),response.finishDate,response.title,response.questions.mkString(","),response.answers.mkString(","),response.sent)
-      )
+      response => Some(response)
     }
   )
 }

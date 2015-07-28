@@ -16,7 +16,11 @@ case class Survey (id:Option[BSONObjectID],
                     //sentDate:Option[java.util.Date],
                     title:String,
                     questions:List[String],
-                    emails:List[String])
+                    emails:List[String]){
+  def createResponse(responseId: BSONObjectID){
+    Response(responseId,id.get,None,title,questions,List(),false)
+  }
+}
                     //links:List[String])
 
 object Survey {
