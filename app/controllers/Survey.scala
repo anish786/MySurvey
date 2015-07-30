@@ -4,6 +4,7 @@ package controllers
  * Created by Anish on 4/28/2015.
  */
 
+import controllers.Application._
 import play.api.data.Form
 import play.api.libs.mailer.{MailerPlugin, Email}
 import play.api.mvc._
@@ -51,6 +52,7 @@ object Survey extends Controller with MongoController{
 
   def sendSurvey(surveyid:String,emails:String) = Action.async{ implicit request =>
     val lstEmails = emails.split(",")
+    println(lstEmails)
     SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(surveyid))).one[models.Survey].map{
       optSurvey => {
         optSurvey match {
@@ -59,8 +61,21 @@ object Survey extends Controller with MongoController{
               (result,email) =>
                 val responseId = BSONObjectID.generate
                 val response = survey.createResponse(responseId)
-                //println(response)
-                ResponseCollection.insert(response)
+                ResponseCollection.insert(response).map{
+                 a =>
+                  val email_bucket = Email(
+                    "Simple email",
+                    "Mister FROM <mysurveydev@gmail.com>",
+                    Seq(email),
+                    //      attachments = Seq(
+                    //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
+                    //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
+                    //      ),
+                    bodyText = Some("A text message"),
+                    bodyHtml = Some("<html><body><p>localhost:9000/" +responseId.stringify+ "</p></body></html>")
+                  )
+                  val id = MailerPlugin.send(email_bucket)
+                }
                 result.concat(email).concat(responseId.stringify)
 
             }

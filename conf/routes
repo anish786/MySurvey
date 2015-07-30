@@ -9,9 +9,8 @@ POST    /login                      controllers.Login.authenticate
 GET     /newsurvey                  controllers.Survey.newSurvey
 GET     /surveys                    controllers.Response.index
 POST    /survey                     controllers.Survey.add
-GET     /logout/login                     controllers.Login.logout
+GET     /logout/login               controllers.Login.logout
 GET     /signup                     controllers.Login.signup
-GET     /send                       controllers.Application.send
 GET     /survey/:surveyid/send/:emails  controllers.Survey.sendSurvey(surveyid: String, emails: String)
 # GET     /:surveyid                  controllers.Survey.get(surveyid: String)
 GET   /:responseid                  controllers.Response.getResponse(responseid: String)

@@ -12,24 +12,22 @@ import play.api.data.validation.Constraints._
 import reactivemongo.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, BSONObjectID}
 
 case class Survey (id:Option[BSONObjectID],
-                    createDate:Option[java.util.Date],
-                    //sentDate:Option[java.util.Date],
-                    title:String,
-                    questions:List[String],
-                    emails:List[String]){
+                   createDate:Option[java.util.Date],
+                   //sentDate:Option[java.util.Date],
+                   title:String,
+                   questions:List[String]){
   def createResponse(responseid: BSONObjectID) = {
     Response(responseid,id.get,None,title,questions,List(),false)
   }
 }
-                    //links:List[String])
+//links:List[String])
 
 object Survey {
   val fldId = "_id"
   val fldCreateDate = "createdate"
- // val fldSentDate = "sentdate"
+  // val fldSentDate = "sentdate"
   val fldTitle = "title"
   val fldQuestions = "questions"
-  val fldEmails = "emails"
   //val fldLinks = "links"
 
   implicit object SurveyWriter extends BSONDocumentWriter[Survey]{
@@ -38,9 +36,8 @@ object Survey {
       fldCreateDate -> survey.createDate.getOrElse(new java.util.Date()),
       //fldSentDate -> survey.sentDate.getOrElse(new java.util.Date()),
       fldTitle -> survey.title,
-      fldQuestions -> survey.questions,
-      fldEmails -> survey.emails
-//      fldLinks -> survey.links
+      fldQuestions -> survey.questions
+      //      fldLinks -> survey.links
     )
   }
 
@@ -50,9 +47,8 @@ object Survey {
       doc.getAs[java.util.Date](fldCreateDate),
       //doc.getAs[java.util.Date](fldSentDate),
       doc.getAs[String](fldTitle).get,
-      doc.getAs[List[String]](fldQuestions).getOrElse(List()),
-      doc.getAs[List[String]](fldEmails).getOrElse(List())
-//      doc.getAs[List[String]](fldLinks).getOrElse(List())
+      doc.getAs[List[String]](fldQuestions).getOrElse(List())
+      //      doc.getAs[List[String]](fldLinks).getOrElse(List())
     )
   }
 
@@ -66,22 +62,20 @@ object Survey {
       fldCreateDate -> optional(of[java.util.Date]),
       //fldSentDate -> optional(of[java.util.Date]),
       fldTitle -> nonEmptyText,
-      fldQuestions -> text,
-      fldEmails -> text
+      fldQuestions -> text
     )
-    { (id,createDate,title,questions,emails) =>
+    { (id,createDate,title,questions) =>
       Survey(
         id.map(BSONObjectID(_)),
         createDate,
         //sentDate,
         title,
-        questions.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c},
-        emails.split(" ").foldLeft(List[String]()){(c,e) => e.trim :: c}
+        questions.split(",").foldLeft(List[String]()){(c,e) => e.trim :: c}
       )
     }
     {
       survey => Some(
-        (survey.id.map(_.stringify),survey.createDate,survey.title,survey.questions.mkString(","),survey.emails.mkString(" "))
+        (survey.id.map(_.stringify),survey.createDate,survey.title,survey.questions.mkString(","))
       )
     }
   )

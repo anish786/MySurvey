@@ -112,23 +112,4 @@ object Application extends Controller with MongoController{
       user =>
         LoginCollection.insert(user).zip(partialIndex(models.User.form.fill(user))).map(_._2)
     )}
-
-  def send = Action {
-    for (x <- 1 to models.Survey.fldEmails.length()) {
-      val email = Email(
-        "Simple email",
-        "Mister FROM <mysurveydev@gmail.com>",
-        Seq("Miss TO <+ali.anish91@gmail.com>"),
-        //      attachments = Seq(
-        //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
-        //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))
-        //      ),
-        bodyText = Some("A text message"),
-        bodyHtml = Some("<html><body><p>localhost:9000/ <b>html</b></p></body></html>")
-      )
-      val id = MailerPlugin.send(email)
-    }
-    Ok("Email sent!")
-  }
-
 }
