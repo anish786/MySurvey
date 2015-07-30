@@ -5,11 +5,13 @@ package controllers
  */
 
 import play.api.data.Form
+import play.api.libs.mailer.{MailerPlugin, Email}
 import play.api.mvc._
 import play.modules.reactivemongo._
 import play.twirl.api.Html
 import reactivemongo.api.collections.default._
 import reactivemongo.bson._
+import play.api.Play.current
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -57,7 +59,8 @@ object Survey extends Controller with MongoController{
               (result,email) =>
                 val responseId = BSONObjectID.generate
                 val response = survey.createResponse(responseId)
-                //ResponseCollection.insert(response)
+                //println(response)
+                ResponseCollection.insert(response)
                 result.concat(email).concat(responseId.stringify)
 
             }
@@ -76,46 +79,46 @@ object Survey extends Controller with MongoController{
     Application.generatePage(request, views.html.newsurvey())
   }
 
-  def index = Action.async { implicit request =>
-
-    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
-      list =>
-        views.html.survey(list)
-    }
-
-    val futauthpage = for{
-      user <- Application.getLoggedInUser(request)
-      authorpage <- authorhtmlfut
-    //page <- Application.generatePage(request,authorpage,false)
-    } yield {
-        user match {
-          case Application.LoggedInUser(userid,username) => views.html.aggregator(authorpage)(views.html.confirmation())
-          case _ => authorpage
-        }
-      }
-
-    for {
-      authorpage <- futauthpage
-      page <- Application.generatePage(request,authorpage,false)
-    } yield {
-      page
-    }
-    //Ok(views.html.author(List()))
-  }
-
-
+//  def index = Action.async { implicit request =>
+//
+//    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
+//      list =>
+//        views.html.survey(list)
+//    }
+//
+//    val futauthpage = for{
+//      user <- Application.getLoggedInUser(request)
+//      authorpage <- authorhtmlfut
+//    //page <- Application.generatePage(request,authorpage,false)
+//    } yield {
+//        user match {
+//          case Application.LoggedInUser(userid,username) => views.html.aggregator(authorpage)(views.html.confirmation())
+//          case _ => authorpage
+//        }
+//      }
+//
+//    for {
+//      authorpage <- futauthpage
+//      page <- Application.generatePage(request,authorpage,false)
+//    } yield {
+//      page
+//    }
+//    //Ok(views.html.author(List()))
+//  }
 
 
-  def get(authorid: String) = Action.async { implicit request =>
-    val authorhtmlfut = SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(authorid))).cursor[models.Survey].collect[List]().map{
-      list =>
-        views.html.usersurvey(list)
-    }
 
-    for{
-      authorpage <- authorhtmlfut
-      page <- Application.generatePage(request,authorpage)
-    } yield page
 
-  }
+//  def get(authorid: String) = Action.async { implicit request =>
+//    val authorhtmlfut = SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(authorid))).cursor[models.Survey].collect[List]().map{
+//      list =>
+//        views.html.usersurvey(list)
+//    }
+//
+//    for{
+//      authorpage <- authorhtmlfut
+//      page <- Application.generatePage(request,authorpage)
+//    } yield page
+//
+//  }
 }

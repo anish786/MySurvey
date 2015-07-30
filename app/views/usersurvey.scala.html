@@ -1,20 +1,13 @@
-@(lstSurveys: List[Survey])
+@(lstResponses: List[Response])
 <div>
-    @for(survey <- lstSurveys) {
+    @for(response <- lstResponses) {
+    <h3>@response.title</h3>
+    @for(x <- 1 to response.questions.length){
+            @if(response.questions != ""){
+                <div>@response.questions(x-1)</div><br>
+                <div><input type="text" name="answers" id="answers"  placeholders="Answer" required><br></div>
+                }
 
-    @for(x <- 1 to survey.emails.length){
-        @if(survey.emails.length > 1){
-             <div>@survey.id.get.stringify</div>
-        }
-    }
-            <div>@survey.title</div>
-    @for(x <- 1 to survey.questions.length){
-            @if(survey.questions != ""){
-                <div>@survey.questions(x-1)</div><br>
-                <div><input type="text" required></div>
             }
-    }
-        <br/>
-        <div><button type="submit">Done</button></div>
     }
 </div>

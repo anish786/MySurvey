@@ -118,7 +118,7 @@ object Application extends Controller with MongoController{
       val email = Email(
         "Simple email",
         "Mister FROM <mysurveydev@gmail.com>",
-        Seq("Miss TO <ali.anish91@gmail.com>"),
+        Seq("Miss TO <+ali.anish91@gmail.com>"),
         //      attachments = Seq(
         //        AttachmentFile("favicon.png", new File(current.classloader.getResource("public/images/favicon.png").getPath)),
         //        AttachmentData("data.txt", "data".getBytes, "text/plain", Some("Simple data"), Some(EmailAttachment.INLINE))

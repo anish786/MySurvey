@@ -53,15 +53,8 @@ object Response{
   }
   val form = Form(
     mapping(
-      fldId -> nonEmptyText, //verifying pattern (
-        //Common.objectIdRegEx,
-        //"constraint.objectId",
-        //"error.objectId"
-      //)),
-      //fldTitle -> nonEmptyText,
-      //fldQuestions -> nonEmptyText,
+      fldId -> nonEmptyText,
       fldAnswers -> list(text)
-      //fldSent -> boolean
     )
     { (id,answers) => id->answers
     }

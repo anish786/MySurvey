@@ -1,25 +1,36 @@
-@(lstSurveys: List[Survey])
+@(lstResponses: List[Response])
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
 <body>
 <div data-role="page" id="pageone">
     <div data-role="main" class="ui-content">
         <form><input type="button" value="back" onClick="history.go(-1);return true;"></form>
         <div data-role="collapsibleset">
-            @for(survey <- lstSurveys){
+            @for(response <- lstResponses){
             <div data-role="collapsible">
-                <h3>@survey.title</h3>
-                <p>Sent Date: @survey.createDate</p>
-                <p>@if(survey.emails != ""){
-                    Sent: @survey.emails.length
-                }</p>
-
-                <!--<p>Received: 0</p>-->
-                <!--<div data-role="collapsible">-->
-                    <!--<h3>Responses</h3>-->
-                    <!--<p>First response</p>-->
-                <!--</div>-->
+                <h3>@response.title</h3>
+                <p>Sent Date: @response.finishDate</p>
+                <p>Sent: 0</p>
+                <p>Received: 0</p>
+                    @for(responsse <- lstResponses){
+                    <div data-role="collapsible">
+                    <h3>Response</h3>
+                    @for(x <- 1 to responsse.questions.length){
+                        <p>Question: @responsse.questions(x-1)</p>
+                        @if(responsse.answers.length != 0){
+                            <p>Answer: @responsse.answers(x-1)</p>
+                        }
+                    }
+                        </div>
+                    }
             </div>
             }
         </div>
     </div>
 </div>
+    </div>
 </body>

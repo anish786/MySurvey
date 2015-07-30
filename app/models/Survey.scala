@@ -17,8 +17,8 @@ case class Survey (id:Option[BSONObjectID],
                     title:String,
                     questions:List[String],
                     emails:List[String]){
-  def createResponse(responseId: BSONObjectID){
-    Response(responseId,id.get,None,title,questions,List(),false)
+  def createResponse(responseid: BSONObjectID) = {
+    Response(responseid,id.get,None,title,questions,List(),false)
   }
 }
                     //links:List[String])
