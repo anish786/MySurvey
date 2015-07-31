@@ -112,4 +112,16 @@ object Application extends Controller with MongoController{
       user =>
         LoginCollection.insert(user).zip(partialIndex(models.User.form.fill(user))).map(_._2)
     )}
+//
+  def send(id: String) = Action {
+    val email = Email(
+      "Simple email",
+      "Mister FROM <mysurveydev@gmail.com>",
+      Seq("Miss TO <nabirdinani@gmail.com>"),
+      bodyText = Some("A text message"),
+      bodyHtml = Some("<html><body><p>localhost:9000/ <b>html</b></p></body></html>")
+    )
+    val id = MailerPlugin.send(email)
+    Ok("Email sent!")
+  }
 }

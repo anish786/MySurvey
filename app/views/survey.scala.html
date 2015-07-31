@@ -6,6 +6,14 @@
 <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
 <!--</head>-->
 <body>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myText").value;
+
+}
+</script>
+<!--document.getElementById("demo").innerHTML = x;-->
 <div data-role="page" id="pageone">
     <div data-role="main" class="ui-content">
         <form><input type="button" value="back" onClick="history.go(-1);return true;"></form>
@@ -16,20 +24,29 @@
                 <p>Sent Date: @response.finishDate</p>
                 <p>Sent: 0</p>
                 <p>Received: 0</p>
-                    @for(responsse <- lstResponses){
-                    <div data-role="collapsible">
-                    <h3>Response</h3>
-                    @for(x <- 1 to responsse.questions.length){
-                        <p>Question: @responsse.questions(x-1)</p>
-                        @if(responsse.answers.length != 0){
-                            <p>Answer: @responsse.answers(x-1)</p>
-                        }
-                    }
-                        </div>
-                    }
+                    <!--@for(responses <- lstResponses){-->
+                    <!--<div data-role="collapsible">-->
+                    <!--<h3>Response</h3>-->
+                    <!--@for(x <- 1 to responses.questions.length){-->
+                        <!--<p>Question: @responses.questions(x-1)</p>-->
+                        <!--@if(responses.answers.length != 0){-->
+                            <!--<p>Answer: @responses.answers(x-1)</p>-->
+                        <!--}-->
+                    <!--}-->
+                        <!--</div>-->
+                    <!--}-->
+                <div>Send survey to: </div><br>
+                <div><input type="text" id="myText"></div>
+                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify, "nabirdinani@gmail.com")){
+                    <div><button type="submit" onclick="myFunction()">Send</button></div>
+                    <p id="demo"></p>
+                }
+
             </div>
             }
+
         </div>
+
     </div>
 </div>
     </div>
