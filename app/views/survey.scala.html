@@ -37,7 +37,7 @@ function myFunction() {
                     <!--}-->
                 <div>Send survey to: </div><br>
                 <div><input type="text" id="myText"></div>
-                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify, "nabirdinani@gmail.com")){
+                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify, "ali.anish91@gmail.com")){
                     <div><button type="submit" onclick="myFunction()">Send</button></div>
                     <p id="demo"></p>
                 }

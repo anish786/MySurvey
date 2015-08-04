@@ -34,32 +34,27 @@ object Response extends Controller with MongoController{
     }
   }
 
-  def addResponse(responseid:String) = Action.async{ implicit request =>
-    ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
-      optSurvey => {
-        optSurvey match {
-          case Some(response) =>
-            ResponseCollection.insert(response)
-          case None => BadRequest
-        }
-      }
-    }
-
-    Future.successful(Ok)
-  }
-//  def addResponse = Action.async { implicit request =>
-//    models.Response.form.bindFromRequest.fold(
-//      errors => {
-//        Future.successful(Redirect(routes.Application.index))},
-//      response => {
-//        //generate a new bson object id
-//        //val q = BSONObjectID("_id" -> models.Survey.fldId)
-//        //create a new survey object from the contents of the old one but with new survey id
-//        ResponseCollection.insert(response).zip(partialIndex(models.Response.form.fill(response))).map(_._2)
-//        //do links.insert with the new survey object id
+//  def addResponse(responseid:String) = Action.async{ implicit request =>
+//    ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
+//      optSurvey => {
+//        optSurvey match {
+//          case Some(response) =>
+//            ResponseCollection.insert(response)
+//          case None => BadRequest
+//        }
 //      }
-//    )
+//    }
+//    Future.successful(Ok)
 //  }
+  def addResponse = Action.async { implicit request =>
+    models.Response.form.bindFromRequest.fold(
+      errors => {
+        Future.successful(Redirect(routes.Application.index))},
+      response => {
+        ResponseCollection.insert(response).zip(partialIndex(models.Response.form.fill(response))).map(_._2)
+      }
+    )
+  }
 
   def index = Action.async { implicit request =>
 

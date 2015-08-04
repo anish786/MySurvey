@@ -53,10 +53,10 @@ object Response{
   }
   val form = Form(
     mapping(
-      fldId -> nonEmptyText,
+      //fldId -> nonEmptyText,
       fldAnswers -> list(text)
     )
-    { (id,answers) => id->answers
+    { (answers) => answers
     }
     {
       response => Some(response)
