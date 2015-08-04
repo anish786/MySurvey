@@ -12,7 +12,7 @@ POST    /survey                     controllers.Survey.add
 GET     /send/:surveyid                       controllers.Application.send(surveyid: String)
 GET     /logout/login               controllers.Login.logout
 GET     /signup                     controllers.Login.signup
-GET     /survey/:surveyid/send/:emails  controllers.Survey.sendSurvey(surveyid: String, emails: String)
+POST     /survey/:surveyid/send  controllers.Survey.sendSurvey(surveyid: String)
 # GET     /:surveyid                  controllers.Survey.get(surveyid: String)
 GET   /:responseid                  controllers.Response.getResponse(responseid: String)
 POST  /:responseid                  controllers.Response.getResponse(responseid: String)
