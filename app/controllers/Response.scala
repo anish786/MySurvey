@@ -5,6 +5,7 @@ package controllers
  */
 
 import controllers.Survey._
+import org.joda.time.DateTime
 import play.api.data.{Forms, Form}
 import play.api.data.Forms._
 import play.api.libs.mailer.{MailerPlugin, Email}
@@ -20,6 +21,7 @@ import scala.concurrent.Future
 
 object Response extends Controller with MongoController{
   lazy val ResponseCollection = db("responses")
+  lazy val SurveyCollection = db("surveys")
   trait Response
 
   def partialIndex(form:Form[models.Response]) = {
@@ -44,7 +46,16 @@ object Response extends Controller with MongoController{
       optResponse => {
         optResponse match {
           case Some(response) =>
-            //ResponseCollection.update("answers": receivedResponses)
+            val ans = BSONDocument(
+              "$set" -> BSONDocument(
+                "_id" -> BSONObjectID(responseid),
+                "surveyid" -> response.surveyid,
+                "finishdate" -> BSONDateTime(new DateTime().getMillis),
+                "title" -> BSONString(response.title),
+                "questions" -> response.questions,
+                "answers" -> receivedResponses,
+                "sent" -> true))
+            ResponseCollection.update(BSONDocument("_id" -> responseid), ans)
           case None => BadRequest
         }
       }
@@ -67,34 +78,26 @@ object Response extends Controller with MongoController{
 //
   def index = Action.async { implicit request =>
 
-    val authorhtmlfut = ResponseCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{
+    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{
       list =>
         views.html.survey(list)
     }
-
     val futauthpage = for{
       user <- Application.getLoggedInUser(request)
       authorpage <- authorhtmlfut
-    //page <- Application.generatePage(request,authorpage,false)
     } yield {
         user match {
           case Application.LoggedInUser(userid,username) => views.html.aggregator(authorpage)(views.html.confirmation())
           case _ => authorpage
         }
       }
-
     for {
       authorpage <- futauthpage
       page <- Application.generatePage(request,authorpage,false)
     } yield {
       page
     }
-    //Ok(views.html.author(List()))
   }
-//
-
-
-
   def getResponse(responseid: String) = Action.async { implicit request =>
     val authorhtmlfut = ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).cursor[models.Response].collect[List]().map{
       list =>
@@ -106,5 +109,8 @@ object Response extends Controller with MongoController{
       page <- Application.generatePage(request,authorpage)
     } yield page
 
+  }
+  def confirmation(responsid: String) = Action.async { implicit request =>
+    Application.generatePage(request, views.html.confirmation())
   }
 }
