@@ -41,8 +41,8 @@ object Response extends Controller with MongoController{
     println("im in")
     println(receivedResponses)
     ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
-      optSurvey => {
-        optSurvey match {
+      optResponse => {
+        optResponse match {
           case Some(response) =>
             //ResponseCollection.update("answers": receivedResponses)
           case None => BadRequest
