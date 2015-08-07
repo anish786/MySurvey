@@ -1,4 +1,4 @@
-@(lstResponses: List[Response])
+@(lstResponses: List[Survey])
 <!--<head>-->
 <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
@@ -22,23 +22,11 @@ function myFunction() {
             @for(response <- lstResponses){
             <div data-role="collapsible">
                 <h3>@response.title</h3>
-                <p>Sent Date: @response.finishDate</p>
                 <p>Sent: 0</p>
                 <p>Received: 0</p>
-                <!--@for(responses <- lstResponses){-->
-                <!--<div data-role="collapsible">-->
-                <!--<h3>Response</h3>-->
-                <!--@for(x <- 1 to responses.questions.length){-->
-                <!--<p>Question: @responses.questions(x-1)</p>-->
-                <!--@if(responses.answers.length != 0){-->
-                <!--<p>Answer: @responses.answers(x-1)</p>-->
-                <!--}-->
-                <!--}-->
-                <!--</div>-->
-                <!--}-->
                 <div>Send survey to: </div><br>
-                <div><input type="text" id="myText"></div>
-                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify)){
+
+                @helper.form(action = routes.Survey.sendSurvey(response.id.get.stringify)){
                 <div><input type="text" name="emails"></div>
                 <div><button type="submit" >Send</button></div>
 

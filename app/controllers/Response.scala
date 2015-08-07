@@ -40,22 +40,17 @@ object Response extends Controller with MongoController{
   def addResponse(responseid:String) = Action.async{ implicit request =>
     val form = Form("answers" -> list(text))
     val receivedResponses = form.bindFromRequest().get
-    println("im in")
-    println(receivedResponses)
     ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
       optResponse => {
         optResponse match {
           case Some(response) =>
             val ans = BSONDocument(
               "$set" -> BSONDocument(
-                "_id" -> BSONObjectID(responseid),
-                "surveyid" -> response.surveyid,
                 "finishdate" -> BSONDateTime(new DateTime().getMillis),
-                "title" -> BSONString(response.title),
-                "questions" -> response.questions,
                 "answers" -> receivedResponses,
                 "sent" -> true))
-            ResponseCollection.update(BSONDocument("_id" -> responseid), ans)
+            val selector = BSONDocument("_id" -> BSONObjectID(responseid))
+            ResponseCollection.update(selector, ans)
           case None => BadRequest
         }
       }
@@ -78,7 +73,7 @@ object Response extends Controller with MongoController{
 //
   def index = Action.async { implicit request =>
 
-    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{
+    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
       list =>
         views.html.survey(list)
     }
@@ -98,6 +93,7 @@ object Response extends Controller with MongoController{
       page
     }
   }
+
   def getResponse(responseid: String) = Action.async { implicit request =>
     val authorhtmlfut = ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).cursor[models.Response].collect[List]().map{
       list =>

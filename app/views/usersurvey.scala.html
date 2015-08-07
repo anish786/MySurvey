@@ -5,10 +5,10 @@
 
     <h3>@response.title</h3>
     @helper.form(action = routes.Response.addResponse(response.id.stringify)){
-    @for(x <- 1 to response.questions.length){
+    @for(x <- 0 to response.questions.length-1){
             @if(response.questions != ""){
-                <div>@response.questions(x-1)</div><br>
-                <div><input type="text" name="answers[x]" placeholders="Answer" required><br></div>
+                <div>@response.questions(x)</div><br>
+                <div><input type="text" name="answers[@x]" placeholders="Answer" required><br></div>
                 }
             }
     <div><button type="submit">Send</button></div>

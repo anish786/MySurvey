@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index
 POST	/   						controllers.Application.add
-POST    /                      controllers.Login.authenticate
+POST    /login                      controllers.Login.authenticate
 GET     /newsurvey                  controllers.Survey.newSurvey
 GET     /surveys                    controllers.Response.index
 POST    /survey                     controllers.Survey.add
