@@ -5,7 +5,7 @@ package controllers
  */
 
 import controllers.Application._
-import play.api.data.Form
+import play.api.data.{Forms, Form}
 import play.api.libs.mailer.{MailerPlugin, Email}
 import play.api.mvc._
 import play.modules.reactivemongo._
@@ -16,6 +16,7 @@ import play.api.Play.current
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import play.api.data.Forms._
 
 object Survey extends Controller with MongoController{
   lazy val SurveyCollection = db("surveys")
@@ -50,9 +51,11 @@ object Survey extends Controller with MongoController{
     )
   }
 
-  def sendSurvey(surveyid:String,emails:String) = Action.async{ implicit request =>
+  def sendSurvey(surveyid:String) = Action.async{ implicit request =>
+    val form = Form(single("emails" -> text))
+    val emails = form.bindFromRequest().get
     val lstEmails = emails.split(",")
-    println(lstEmails)
+    println("List of emails: " + emails)
     SurveyCollection.find(BSONDocument("_id" -> BSONObjectID(surveyid))).one[models.Survey].map{
       optSurvey => {
         optSurvey match {

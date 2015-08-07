@@ -1,13 +1,18 @@
 @(lstResponses: List[Response])
+
 <div>
     @for(response <- lstResponses) {
+
     <h3>@response.title</h3>
+    @helper.form(action = routes.Response.addResponse(response.id.stringify)){
     @for(x <- 1 to response.questions.length){
             @if(response.questions != ""){
                 <div>@response.questions(x-1)</div><br>
-                <div><input type="text" name="answers" id="answers"  placeholders="Answer" required><br></div>
+                <div><input type="text" name="answers" placeholders="Answer" required><br></div>
                 }
 
             }
+    <div><button type="submit" >Send</button></div>
+    }
     }
 </div>

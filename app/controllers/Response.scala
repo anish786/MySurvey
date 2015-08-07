@@ -5,7 +5,8 @@ package controllers
  */
 
 import controllers.Survey._
-import play.api.data.Form
+import play.api.data.{Forms, Form}
+import play.api.data.Forms._
 import play.api.libs.mailer.{MailerPlugin, Email}
 import play.api.mvc._
 import play.modules.reactivemongo._
@@ -34,28 +35,36 @@ object Response extends Controller with MongoController{
     }
   }
 
-//  def addResponse(responseid:String) = Action.async{ implicit request =>
-//    ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
-//      optSurvey => {
-//        optSurvey match {
-//          case Some(response) =>
-//            ResponseCollection.insert(response)
-//          case None => BadRequest
-//        }
+  def addResponse(responseid:String) = Action.async{ implicit request =>
+    val form = Form("answers" -> list(text))
+    val receivedResponses = form.bindFromRequest().get
+    println("im in")
+    println(receivedResponses)
+    ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
+      optSurvey => {
+        optSurvey match {
+          case Some(response) =>
+            //ResponseCollection.update("answers": receivedResponses)
+          case None => BadRequest
+        }
+      }
+    }
+    Future.successful(Ok)
+  }
+//  def addResponse(responseid: String) = Action.async { implicit request =>
+//    val form = Form(single("answers" -> list(text)))
+//    val answers = form.bindFromRequest().get
+//    println(answers)
+//    models.Response.form.bindFromRequest.fold(
+//      errors => {
+//        Future.successful(Redirect(routes.Application.index))},
+//      response => {
+//        //ResponseCollection.insert(response)
 //      }
-//    }
+//    )
 //    Future.successful(Ok)
 //  }
-  def addResponse = Action.async { implicit request =>
-    models.Response.form.bindFromRequest.fold(
-      errors => {
-        Future.successful(Redirect(routes.Application.index))},
-      response => {
-        ResponseCollection.insert(response).zip(partialIndex(models.Response.form.fill(response))).map(_._2)
-      }
-    )
-  }
-
+//
   def index = Action.async { implicit request =>
 
     val authorhtmlfut = ResponseCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{

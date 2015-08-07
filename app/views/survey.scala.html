@@ -10,6 +10,7 @@
 <script>
 function myFunction() {
     var x = document.getElementById("myText").value;
+    document.getElementById("demo").innerHTML = x;
 
 }
 </script>
@@ -24,22 +25,24 @@ function myFunction() {
                 <p>Sent Date: @response.finishDate</p>
                 <p>Sent: 0</p>
                 <p>Received: 0</p>
-                    <!--@for(responses <- lstResponses){-->
-                    <!--<div data-role="collapsible">-->
-                    <!--<h3>Response</h3>-->
-                    <!--@for(x <- 1 to responses.questions.length){-->
-                        <!--<p>Question: @responses.questions(x-1)</p>-->
-                        <!--@if(responses.answers.length != 0){-->
-                            <!--<p>Answer: @responses.answers(x-1)</p>-->
-                        <!--}-->
-                    <!--}-->
-                        <!--</div>-->
-                    <!--}-->
+                <!--@for(responses <- lstResponses){-->
+                <!--<div data-role="collapsible">-->
+                <!--<h3>Response</h3>-->
+                <!--@for(x <- 1 to responses.questions.length){-->
+                <!--<p>Question: @responses.questions(x-1)</p>-->
+                <!--@if(responses.answers.length != 0){-->
+                <!--<p>Answer: @responses.answers(x-1)</p>-->
+                <!--}-->
+                <!--}-->
+                <!--</div>-->
+                <!--}-->
                 <div>Send survey to: </div><br>
                 <div><input type="text" id="myText"></div>
-                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify, "ali.anish91@gmail.com")){
-                    <div><button type="submit" onclick="myFunction()">Send</button></div>
-                    <p id="demo"></p>
+                @helper.form(action = routes.Survey.sendSurvey(response.surveyid.stringify)){
+                <div><input type="text" name="emails"></div>
+                <div><button type="submit" >Send</button></div>
+
+                <p id="demo"></p>
                 }
 
             </div>
@@ -49,5 +52,5 @@ function myFunction() {
 
     </div>
 </div>
-    </div>
+</div>
 </body>
