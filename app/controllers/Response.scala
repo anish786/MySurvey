@@ -73,9 +73,9 @@ object Response extends Controller with MongoController{
 //
   def index = Action.async { implicit request =>
 
-    val authorhtmlfut = SurveyCollection.find(BSONDocument()).cursor[models.Survey].collect[List]().map{
+    val authorhtmlfut = ResponseCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{
       list =>
-        views.html.survey(list)
+        views.html.response(list)
     }
     val futauthpage = for{
       user <- Application.getLoggedInUser(request)

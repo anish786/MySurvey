@@ -1,0 +1,43 @@
+@(lstResponses: List[Response])
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myText").value;
+    document.getElementById("demo").innerHTML = x;
+
+}
+</script>
+<!--document.getElementById("demo").innerHTML = x;-->
+<div data-role="page" id="pageone">
+    <div data-role="main" class="ui-content">
+        <form><input type="button" value="back" onClick="history.go(-1);return true;"></form>
+        <div data-role="collapsibleset">
+            @for(response <- lstResponses){
+            <div data-role="collapsible">
+                <h3>@response.title</h3>
+                <p>Sent: 0</p>
+                <p>Received: 0</p>
+                <p>Sent Date: @response.finishDate</p>
+                <div data-role="collapsibleset">
+                @for(x <- 0 to response.questions.length-1){
+                    <div>@response.questions(x)</div><br>
+                    <div>@response.answers(x)</div>
+                }
+                </div>
+
+            </div>
+            }
+
+        </div>
+
+    </div>
+</div>
+</div>
+</body>

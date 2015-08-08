@@ -1,4 +1,4 @@
-@(lstResponses: List[Survey])
+@(lstSurveys: List[Survey])
 <!--<head>-->
 <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
@@ -19,14 +19,14 @@ function myFunction() {
     <div data-role="main" class="ui-content">
         <form><input type="button" value="back" onClick="history.go(-1);return true;"></form>
         <div data-role="collapsibleset">
-            @for(response <- lstResponses){
+            @for(survey <- lstSurveys){
             <div data-role="collapsible">
-                <h3>@response.title</h3>
+                <h3>@survey.title</h3>
                 <p>Sent: 0</p>
                 <p>Received: 0</p>
                 <div>Send survey to: </div><br>
 
-                @helper.form(action = routes.Survey.sendSurvey(response.id.get.stringify)){
+                @helper.form(action = routes.Survey.sendSurvey(survey.id.get.stringify)){
                 <div><input type="text" name="emails"></div>
                 <div><button type="submit" >Send</button></div>
 
