@@ -1,10 +1,10 @@
 @(lstSurveys: List[Survey])
-<!--<head>-->
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
-<!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
-<!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
-<!--</head>-->
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
 <body>
 
 <script>
@@ -25,7 +25,6 @@ function myFunction() {
                 <p>Sent: 0</p>
                 <p>Received: 0</p>
                 <div>Send survey to: </div><br>
-
                 @helper.form(action = routes.Survey.sendSurvey(survey.id.get.stringify)){
                 <div><input type="text" name="emails"></div>
                 <div><button type="submit" >Send</button></div>
