@@ -22,13 +22,10 @@ function myFunction() {
             @for(response <- lstResponses){
             <div data-role="collapsible">
                 <h3>@response.title</h3>
-                <p>Sent: 0</p>
-                <p>Received: 0</p>
-                <p>Sent Date: @response.finishDate</p>
                 <div data-role="collapsibleset">
-                @for(x <- 0 to response.questions.length-1){
-                    <div>@response.questions(x)</div><br>
-                    <div>@response.answers(x)</div>
+                @for(x <- response.questions.length-1 to 0 by -1){
+                    <div align="left"><strong>Question: @response.questions(x)</strong></div>
+                    <div align="left">Answer: @response.answers(x)</div><br>
                 }
                 </div>
 

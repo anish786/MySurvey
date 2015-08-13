@@ -1,17 +1,24 @@
 @(lstResponses: List[Response])
-
-<div>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+<div data-role="page" id="pageone">
+    <div data-role="main" class="ui-content">
     @for(response <- lstResponses) {
-
-    <h3>@response.title</h3>
+    <h3 align="center" class="title">@response.title</h3>
     @helper.form(action = routes.Response.addResponse(response.id.stringify)){
-    @for(x <- 0 to response.questions.length-1){
+    @for(x <- response.questions.length-1 to 0 by -1){
             @if(response.questions != ""){
-                <div>@response.questions(x)</div><br>
+                <div align="left">@response.questions(x)</div><br>
                 <div><input type="text" name="answers[@x]" placeholders="Answer" required><br></div>
                 }
             }
-    <div><button type="submit">Send</button></div>
+            <div><button type="submit" onclick="@routes.Response.confirmation(response.id.stringify)">Send</button></div>
     }
     }
 </div>
+</body>

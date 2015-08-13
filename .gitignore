@@ -14,7 +14,7 @@ dist
 /RUNNING_PID
 /.settings
 /bin/
-conf/application.conf*
+conf/application.conf
 .sbtserver/
 projectFilesBackup/
 *.lock

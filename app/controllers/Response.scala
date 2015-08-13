@@ -57,20 +57,7 @@ object Response extends Controller with MongoController{
     }
     Future.successful(Ok)
   }
-//  def addResponse(responseid: String) = Action.async { implicit request =>
-//    val form = Form(single("answers" -> list(text)))
-//    val answers = form.bindFromRequest().get
-//    println(answers)
-//    models.Response.form.bindFromRequest.fold(
-//      errors => {
-//        Future.successful(Redirect(routes.Application.index))},
-//      response => {
-//        //ResponseCollection.insert(response)
-//      }
-//    )
-//    Future.successful(Ok)
-//  }
-//
+
   def index = Action.async { implicit request =>
 
     val authorhtmlfut = ResponseCollection.find(BSONDocument()).cursor[models.Response].collect[List]().map{
