@@ -38,8 +38,10 @@ object Response extends Controller with MongoController{
   }
 
   def addResponse(responseid:String) = Action.async{ implicit request =>
-    val form = Form("answers" -> list(text))
-    val receivedResponses = form.bindFromRequest().get
+    val form = Form(tuple("answers" -> list(text), "submit" -> boolean))
+    val fromRequest = form.bindFromRequest()
+    val receivedResponses = fromRequest.get._1
+    val submit = fromRequest.get._2
     ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
       optResponse => {
         optResponse match {
@@ -48,15 +50,14 @@ object Response extends Controller with MongoController{
               "$set" -> BSONDocument(
                 "finishdate" -> BSONDateTime(new DateTime().getMillis),
                 "answers" -> receivedResponses,
-                "sent" -> true))
+                "sent" -> submit))
             val selector = BSONDocument("_id" -> BSONObjectID(responseid))
             ResponseCollection.update(selector, ans)
-            //Application.generatePage(request, views.html.confirmation())
+            Ok//Application.generatePage(request, views.html.confirmation())
           case None => BadRequest
         }
       }
     }
-    Future.successful(Ok)
   }
 
   def saveResponse(responseid:String) = Action.async{ implicit request =>
