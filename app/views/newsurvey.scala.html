@@ -19,9 +19,9 @@ window.onload = function(){
     <div data-role="main" class="ui-content">
         @helper.form(action = routes.Survey.add){
         <div class="title">MySurvey</div>
-        <h2 align="center">New Survey</h2>
-        <div><label>Title: </label><input type="title" name="title" id="title" placeholder="Title" autofocus required><br></div>
-        <div><label>Questions: </label><input type="text" name="questions" id="questions"  placeholders="Question" required></div>
+        <h2 align="left">New Survey</h2>
+        <div align="left"><label>Title: </label><input type="text" name="title" id="title" placeholder="Title" autofocus required></div><br>
+        <div align="left"><label>Questions: </label><input type="text" name="questions" id="questions"  placeholders="Question" required></div>
         <!--<div><input type="button" id="btnId" value="add"><br></div>!-->
         <div><button type="submit">Done</button></div>
         }

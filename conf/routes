@@ -18,7 +18,8 @@ POST     /survey/:surveyid/send  controllers.Survey.sendSurvey(surveyid: String)
 GET   /:responseid                  controllers.Response.getResponse(responseid: String)
 POST  /:responseid                  controllers.Response.getResponse(responseid: String)
 POST    /:responseid/post             controllers.Response.addResponse(responseid: String)
-GET     /:responseid                controllers.Response.addResponse(responseid: String)
+POST    /:responseid/save           controllers.Response.saveResponse(responseid: String)
+#GET     /:responseid                controllers.Response.addResponse(responseid: String)
 GET     /:responseid/confirm            controllers.Response.confirmation(responseid: String)
 
 # Map static resources from the /public folder to the /assets URL path

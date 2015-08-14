@@ -9,16 +9,24 @@
 <div data-role="page" id="pageone">
     <div data-role="main" class="ui-content">
     @for(response <- lstResponses) {
-    <h3 align="center" class="title">@response.title</h3>
-    @helper.form(action = routes.Response.addResponse(response.id.stringify)){
-    @for(x <- response.questions.length-1 to 0 by -1){
-            @if(response.questions != ""){
-                <div align="left">@response.questions(x)</div><br>
-                <div><input type="text" name="answers[@x]" placeholders="Answer" required><br></div>
-                }
+        <h3 align="center" class="title">@response.title</h3>
+        @helper.form(action = routes.Response.addResponse(response.id.stringify)){
+            @if(response.sent != true){
+                    @for(x <- response.questions.length-1 to 0 by -1){
+                        @if(response.questions != ""){
+                            <div align="left">@response.questions(x)</div><br>
+                            <div><input type="text" name="answers[@x]" placeholders="Answer"><br></div>
+                        }
+                    }
+                <div><button type="submit">Send</button></div>
+            }else{
+                <h3 align="center">Responses have already been recorded.</h3>
             }
-            <div><button type="submit" onclick="@routes.Response.confirmation(response.id.stringify)">Send</button></div>
-    }
-    }
+        }
+        <!--@helper.form(action = routes.Response.saveResponse(response.id.stringify)){
+            <div><button type="submit">Save</button></div>
+        }-->
+        }
+    </div>
 </div>
 </body>

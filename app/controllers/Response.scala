@@ -51,6 +51,26 @@ object Response extends Controller with MongoController{
                 "sent" -> true))
             val selector = BSONDocument("_id" -> BSONObjectID(responseid))
             ResponseCollection.update(selector, ans)
+            //Application.generatePage(request, views.html.confirmation())
+          case None => BadRequest
+        }
+      }
+    }
+    Future.successful(Ok)
+  }
+
+  def saveResponse(responseid:String) = Action.async{ implicit request =>
+    val form = Form("answers" -> list(text))
+    val receivedResponses = form.bindFromRequest().get
+    ResponseCollection.find(BSONDocument("_id" -> BSONObjectID(responseid))).one[models.Response].map{
+      optResponse => {
+        optResponse match {
+          case Some(response) =>
+            val ans = BSONDocument(
+              "$set" -> BSONDocument(
+                "answers" -> receivedResponses))
+            val selector = BSONDocument("_id" -> BSONObjectID(responseid))
+            ResponseCollection.update(selector, ans)
           case None => BadRequest
         }
       }
