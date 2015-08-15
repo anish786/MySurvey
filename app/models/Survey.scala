@@ -20,7 +20,6 @@ case class Survey (id:Option[BSONObjectID],
     Response(responseid,id.get,None,title,questions,List(),false)
   }
 }
-//links:List[String])
 
 object Survey {
   val fldId = "_id"
