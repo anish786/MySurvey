@@ -112,7 +112,7 @@ object Survey extends Controller with MongoController{
         // In this case, the return value will be Future [ List [ Combined ] ] instead of F[L[Survey]] due to the map
         lstSurveys map {
           survey =>
-            models.Combined(survey.id.get.stringify,survey.title,survey.createDate.get,0,0) //This is the return value
+            models.Combined(models.Response.fldSurveyId,survey.id.get.stringify,survey.title,survey.createDate.get,0,0) //This is the return value
         }
     }
 
